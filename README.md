@@ -1,1 +1,1 @@
-# LanguageStudy
+# MemorizingWords
