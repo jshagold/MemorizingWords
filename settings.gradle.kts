@@ -23,4 +23,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "MemorizingWords"
 include(":app")
- 
+include(":domain")
+include(":database")
+include(":data")
