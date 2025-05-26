@@ -22,7 +22,11 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "MemorizingWords"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 include(":app")
 include(":domain")
 include(":database")
 include(":data")
+include(":core")
