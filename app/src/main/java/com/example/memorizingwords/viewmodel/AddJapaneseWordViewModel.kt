@@ -57,7 +57,7 @@ class AddJapaneseWordViewModel @Inject constructor(
                 val word = WordDomain(
                     kanji = screenState.value.kanji,
                     hiragana = hiragana,
-                    korean = listOf(screenState.value.kanji),
+                    korean = listOf(screenState.value.korean),
                     partOfSpeech = 0,
                     exampleSentence = listOf(),
                     createdAt = System.currentTimeMillis(),
