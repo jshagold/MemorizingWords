@@ -11,3 +11,16 @@ kotlin {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
+dependencies {
+    implementation(projects.core)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+
+
+    // Napier Log
+    implementation(libs.napier)
+
+    // Paging
+    implementation(libs.paging.common)
+}

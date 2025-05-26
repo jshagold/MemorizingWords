@@ -22,4 +22,7 @@ interface JapaneseDao {
     @Query("SELECT * FROM japanese")
     fun getAllWords(): List<Japanese>
 
+    @Query("SELECT * FROM japanese LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
+    fun getWordListByPage(page: Int, pageSize: Int): List<Japanese>
+
 }
