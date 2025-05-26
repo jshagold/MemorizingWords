@@ -50,8 +50,11 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import com.example.memorizingwords.navigation.MainNavHost
 import com.example.memorizingwords.ui.theme.MemorizingWordsTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,15 +62,50 @@ class MainActivity : ComponentActivity() {
         setContent {
             MemorizingWordsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Androidsssff",
+                    Box(
                         modifier = Modifier.padding(innerPadding)
-                    )
+                    ) {
+                        MainNavHost()
+                    }
                 }
             }
         }
     }
 }
+
+@Composable
+fun TemporaryScreen(
+    modifier: Modifier = Modifier,
+    navigateToAddJapanese: () -> Unit = {},
+    navigateToWordList: () -> Unit = {}
+) {
+
+    Column(
+        modifier = modifier
+    ) {
+
+        Button(
+            onClick = navigateToAddJapanese
+        ) {
+            Text(
+                text = "add japanese"
+            )
+        }
+
+        Button(
+            onClick = navigateToWordList
+        ) {
+            Text(
+                text = "word list"
+            )
+        }
+    }
+
+
+
+}
+
+
 
 @Preview(showBackground = true)
 @Composable

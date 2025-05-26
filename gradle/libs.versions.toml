@@ -20,6 +20,7 @@ kspVersion = "2.1.20-1.0.32"
 appcompat = "1.7.0"
 material = "1.12.0"
 coroutinesCoreVersion = "1.10.2"
+kotlinSerializationJsonVersion = "1.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -67,6 +68,9 @@ paging-compose = { group = "androidx.paging", name = "paging-compose", version.r
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "pagingVersion" }
+
+# Serialization
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerializationJsonVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

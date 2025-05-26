@@ -25,4 +25,15 @@ interface JapaneseDao {
     @Query("SELECT * FROM japanese LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
     fun getWordListByPage(page: Int, pageSize: Int): List<Japanese>
 
+    @Query("SELECT * FROM japanese ORDER BY :element LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
+    fun getWordListByPageAndElement(page: Int, pageSize: Int, element: String = "kanji"): List<Japanese>
+
+    @Query("SELECT * FROM japanese ORDER BY kanji LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
+    fun getWordListByPageAndKanji(page: Int, pageSize: Int): List<Japanese>
+
+    @Query("SELECT * FROM japanese ORDER BY hiragana LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
+    fun getWordListByPageAndHiragana(page: Int, pageSize: Int): List<Japanese>
+
+    @Query("SELECT * FROM japanese ORDER BY korean LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
+    fun getWordListByPageAndKorean(page: Int, pageSize: Int): List<Japanese>
 }

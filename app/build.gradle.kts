@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.googleDaggerHiltAndroid)
 }
 
 android {
@@ -49,6 +51,7 @@ android {
 dependencies {
     implementation(projects.core)
     implementation(projects.domain)
+    implementation(projects.data)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -65,6 +68,25 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+    // Navigation-Compose
+    implementation(libs.navigation.compose)
+
+    // ConstraintLayout-Compose
+    implementation(libs.androidx.constraintlayout.compose)
+
+
+    // Napier Log
+    implementation(libs.napier)
+
+    // Paging
+    implementation(libs.paging)
+    implementation(libs.paging.compose)
 
 
     implementation("io.appium:java-client:9.4.0")

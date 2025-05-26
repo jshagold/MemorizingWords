@@ -5,11 +5,11 @@ import androidx.paging.PagingState
 import com.example.core.constants.Paging.PAGE_SIZE
 import com.example.data.mapper.toData
 import com.example.data.mapper.toDomain
-import com.example.data.mapper.toEntity
-import com.example.data.model.Japanese
-
 import com.example.database.dao.JapaneseDao
 import com.example.domain.repository.model.JapaneseWord
+import io.github.aakira.napier.Napier
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class JapanesePagingSource @Inject constructor(
@@ -24,8 +24,10 @@ class JapanesePagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, JapaneseWord> {
         return try {
             val page = params.key ?: 1
-            val wordList: List<JapaneseWord> = japaneseDao.getWordListByPage(1, PAGE_SIZE).map { japaneseEntity ->
-                japaneseEntity.toData().toDomain()
+            val wordList: List<JapaneseWord> = withContext(Dispatchers.IO) {
+                japaneseDao.getWordListByPage(page, PAGE_SIZE).map { japaneseEntity ->
+                    japaneseEntity.toData().toDomain()
+                }
             }
 
             LoadResult.Page(

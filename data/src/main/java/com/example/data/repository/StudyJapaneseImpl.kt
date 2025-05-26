@@ -8,7 +8,9 @@ import com.example.data.datasource.JapanesePagingSource
 import com.example.database.dao.JapaneseDao
 import com.example.domain.repository.model.JapaneseWord
 import com.example.domain.repository.repository.StudyJapanese
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class StudyJapaneseImpl @Inject constructor(
@@ -22,5 +24,6 @@ class StudyJapaneseImpl @Inject constructor(
             ),
             pagingSourceFactory = { JapanesePagingSource(japaneseDao) }
         ).flow
+            .flowOn(Dispatchers.IO)
     }
 }

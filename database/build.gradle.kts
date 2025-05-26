@@ -55,4 +55,7 @@ dependencies {
 
     // Napier Log
     implementation(libs.napier)
+
+    // JSON Kotlin Serialization
+    implementation(libs.kotlinx.serialization.json)
 }

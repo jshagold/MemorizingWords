@@ -1,0 +1,51 @@
+package com.example.memorizingwords.navigation
+
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.memorizingwords.TemporaryScreen
+import com.example.memorizingwords.ui.screen.AddJapaneseWordRoute
+import com.example.memorizingwords.ui.screen.AddJapaneseWordScreen
+import com.example.memorizingwords.ui.screen.WordListRoute
+
+@Composable
+fun MainNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController()
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Route.MAIN,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None },
+    ) {
+
+        composable(route = Route.MAIN) {
+            TemporaryScreen(
+                navigateToWordList = {
+                    navController.navigateToWordList()
+                },
+                navigateToAddJapanese = {
+                    navController.navigateToAddJapanese()
+                }
+            )
+        }
+
+        composable(route = Route.WORD_LIST) {
+            WordListRoute()
+        }
+
+
+        composable(route = Route.ADD_JAPANESE) {
+            AddJapaneseWordRoute()
+        }
+
+    }
+}
