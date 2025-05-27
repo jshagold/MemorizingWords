@@ -45,14 +45,11 @@ fun EditText(
     val editText = remember { mutableStateOf(inputText) }
 
     BasicTextField(
-        value = editText.value,
+        value = inputText,
         textStyle = TextStyle(
             color = textColor
         ),
-        onValueChange = {
-            editText.value = it
-            onValueChange(it)
-        },
+        onValueChange = onValueChange,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         singleLine = singleLine,
         modifier = modifier
@@ -71,7 +68,7 @@ fun EditText(
         ) {
             innerTextField()
 
-            if(editText.value.isEmpty()) {
+            if(inputText.isEmpty()) {
                 Text(
                     text = placeholder,
                     color = placeholderColor,
