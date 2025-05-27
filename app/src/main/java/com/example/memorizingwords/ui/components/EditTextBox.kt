@@ -2,6 +2,8 @@ package com.example.memorizingwords.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -20,9 +22,25 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+
+
+@Preview(showBackground = true, backgroundColor = 0xffffffff)
+@Composable
+fun PreviewEditText() {
+    val test = ""
+
+    EditText(
+        inputText = test,
+        placeholder = "PlaceHolder"
+    )
+}
+
+
 
 @Composable
 fun EditText(
@@ -42,7 +60,9 @@ fun EditText(
     singleLine: Boolean = false,
     isFocused: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
-    val editText = remember { mutableStateOf(inputText) }
+    val sharedTextStyle = TextStyle(
+        color = textColor
+    )
 
     BasicTextField(
         value = inputText,
@@ -66,13 +86,33 @@ fun EditText(
                     horizontal = paddingHorizontal,
                 )
         ) {
-            innerTextField()
+            val (textRef, placeHolderRef) = createRefs()
+
+            Box(
+                modifier = Modifier
+                    .constrainAs(textRef) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxWidth()
+            ) {
+                innerTextField()
+            }
 
             if(inputText.isEmpty()) {
                 Text(
                     text = placeholder,
-                    color = placeholderColor,
+                    style = sharedTextStyle.copy(color = placeholderColor),
                     modifier = Modifier
+                        .constrainAs(placeHolderRef) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .fillMaxWidth()
                 )
             }
         }

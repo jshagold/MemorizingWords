@@ -1,8 +1,10 @@
 package com.example.memorizingwords.ui.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,6 +56,7 @@ fun AddJapaneseWordScreen(
     onClickAddBtn: () -> Unit = {},
 ) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
             .fillMaxSize()
     ) {
@@ -66,6 +69,7 @@ fun AddJapaneseWordScreen(
             paddingHorizontal = 5.dp,
             onValueChange = onKanjiTextChange,
             modifier = Modifier
+                .height(40.dp)
                 .fillMaxWidth()
         )
 
@@ -78,6 +82,7 @@ fun AddJapaneseWordScreen(
             paddingHorizontal = 5.dp,
             onValueChange = onHiraganaTextChange,
             modifier = Modifier
+                .height(40.dp)
                 .fillMaxWidth()
         )
 
@@ -90,6 +95,7 @@ fun AddJapaneseWordScreen(
             paddingHorizontal = 5.dp,
             onValueChange = onKoreanTextChange,
             modifier = Modifier
+                .height(40.dp)
                 .fillMaxWidth()
         )
 

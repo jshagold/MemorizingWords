@@ -75,9 +75,6 @@ class AddJapaneseWordViewModel @Inject constructor(
             _screenState.update {
                 AddJapaneseScreenState()
             }
-
-
-            Napier.e { "screenstate: ${screenState.value}" }
         }
     }
 
