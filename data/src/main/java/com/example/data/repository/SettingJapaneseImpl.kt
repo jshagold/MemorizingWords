@@ -10,7 +10,11 @@ import javax.inject.Inject
 class SettingJapaneseImpl @Inject constructor(
     private val japaneseDao: JapaneseDao
 ) : SettingJapanese {
-    override fun setJapaneseWord(word: JapaneseWord) {
+    override suspend fun setJapaneseWord(word: JapaneseWord) {
         japaneseDao.upsertWord(word.toData().toEntity())
+    }
+
+    override suspend fun deleteJapaneseWord(word: JapaneseWord) {
+        japaneseDao.deleteWord(word.toData().toEntity())
     }
 }

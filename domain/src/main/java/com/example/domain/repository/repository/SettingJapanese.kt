@@ -4,6 +4,7 @@ import com.example.domain.repository.model.JapaneseWord
 
 interface SettingJapanese {
 
-    fun setJapaneseWord(word: JapaneseWord)
+    suspend fun setJapaneseWord(word: JapaneseWord)
 
+    suspend fun deleteJapaneseWord(word: JapaneseWord)
 }

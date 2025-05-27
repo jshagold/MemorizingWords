@@ -17,7 +17,7 @@ interface JapaneseDao {
     suspend fun upsertWordList(vararg word: Japanese)
 
     @Delete
-    fun deleteWord(word: Japanese)
+    suspend fun deleteWord(word: Japanese)
 
     @Query("SELECT * FROM japanese")
     fun getAllWords(): List<Japanese>
