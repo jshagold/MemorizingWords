@@ -6,20 +6,23 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.repository.model.JapaneseWord as WordDomain
 import com.example.domain.repository.repository.SettingJapanese
+import com.example.domain.repository.usecase.SetJapaneseWordUseCase
 import com.example.memorizingwords.state.AddJapaneseScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class AddJapaneseWordViewModel @Inject constructor(
     application: Application,
-    private val settingJapanese: SettingJapanese
+    private val setJapaneseWordUseCase: SetJapaneseWordUseCase,
 ) : AndroidViewModel(application) {
 
     private var _screenState: MutableStateFlow<AddJapaneseScreenState> = MutableStateFlow(AddJapaneseScreenState())
@@ -52,20 +55,29 @@ class AddJapaneseWordViewModel @Inject constructor(
 
 
     fun addNewWord() {
-        viewModelScope.launch(Dispatchers.IO) {
-            screenState.value.hiragana?.let { hiragana ->
-                val word = WordDomain(
-                    kanji = screenState.value.kanji,
-                    hiragana = hiragana,
-                    korean = listOf(screenState.value.korean),
-                    partOfSpeech = 0,
-                    exampleSentence = listOf(),
-                    createdAt = System.currentTimeMillis(),
-                    lastStudiedAt = System.currentTimeMillis()
-                )
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                screenState.value.hiragana?.let { hiragana ->
+                    val word = WordDomain(
+                        kanji = screenState.value.kanji,
+                        hiragana = hiragana,
+                        korean = listOf(screenState.value.korean),
+                        partOfSpeech = 0,
+                        exampleSentence = listOf(),
+                        createdAt = System.currentTimeMillis(),
+                        lastStudiedAt = System.currentTimeMillis()
+                    )
 
-                settingJapanese.setJapaneseWord(word)
+                    setJapaneseWordUseCase(word)
+                }
             }
+
+            _screenState.update {
+                AddJapaneseScreenState()
+            }
+
+
+            Napier.e { "screenstate: ${screenState.value}" }
         }
     }
 
