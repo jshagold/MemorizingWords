@@ -1,6 +1,7 @@
 plugins {
     id("java-library")
     alias(libs.plugins.jetbrains.kotlin.jvm)
+    alias(libs.plugins.ksp)
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -23,4 +24,8 @@ dependencies {
 
     // Paging
     implementation(libs.paging.common)
+
+    // Dagger
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
 }
