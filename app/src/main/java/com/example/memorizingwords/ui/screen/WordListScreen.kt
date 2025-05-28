@@ -1,5 +1,6 @@
 package com.example.memorizingwords.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -90,6 +91,7 @@ fun PreviewWordListScreen() {
 @Composable
 fun WordListRoute(
     modifier: Modifier = Modifier,
+    navigateToWordDetail: (id: Long) -> Unit = {},
     viewModel: WordListViewModel = hiltViewModel()
 ) {
 
@@ -98,6 +100,7 @@ fun WordListRoute(
 
     WordListScreen(
         modifier = modifier,
+        onClickWordCard = navigateToWordDetail,
         screenState = screenState,
         pagingData = pagingWordList
     )
@@ -107,13 +110,13 @@ fun WordListRoute(
 @Composable
 fun WordListScreen(
     modifier: Modifier = Modifier,
+    onClickWordCard: (wordId: Long) -> Unit = {},
     screenState: WordListScreenState,
     pagingData: LazyPagingItems<JapaneseWord>
 ) {
 
     Napier.e {
         "${pagingData.itemSnapshotList}\n ${pagingData.itemCount}"
-
     }
 
     Column(
@@ -148,6 +151,9 @@ fun WordListScreen(
                         word = it,
                         modifier = Modifier
                             .height(50.dp)
+                            .clickable {
+                                onClickWordCard(it.id)
+                            }
                     )
                 }
             }

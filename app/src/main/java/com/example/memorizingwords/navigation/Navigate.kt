@@ -9,3 +9,7 @@ fun NavController.navigateToAddJapanese() {
 fun NavController.navigateToWordList() {
     this.navigate(Route.WORD_LIST)
 }
+
+fun NavController.navigateToWordDetail(wordId: Long) {
+    this.navigate("${Route.WORD_DETAIL}/$wordId")
+}
