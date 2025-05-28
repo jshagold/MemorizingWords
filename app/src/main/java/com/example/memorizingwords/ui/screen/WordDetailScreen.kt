@@ -60,6 +60,7 @@ fun PreviewWordDetailScreen() {
 @Composable
 fun WordDetailRoute(
     onBackScreen: () -> Unit,
+    navigateToDrawLetter: (letter: String) -> Unit = {},
     viewModel: WordDetailViewModel = hiltViewModel()
 ) {
 
@@ -74,6 +75,9 @@ fun WordDetailRoute(
             viewModel.deleteWord {
                 onBackScreen()
             }
+        },
+        onClickDrawBtn = {
+            navigateToDrawLetter(screenState.word.kanji ?: "")
         }
     )
 }
@@ -85,7 +89,8 @@ fun WordDetailScreen(
     screenState: WordDetailScreenState,
     onBackScreen: () -> Unit = {},
     onUpdateWord: () -> Unit = {},
-    onDeleteWord: () -> Unit = {}
+    onDeleteWord: () -> Unit = {},
+    onClickDrawBtn: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -325,6 +330,14 @@ fun WordDetailScreen(
             ) {
                 Text(
                     text = "삭제"
+                )
+            }
+
+            Button(
+                onClick = onClickDrawBtn
+            ) {
+                Text(
+                    text = "Draw Kanji"
                 )
             }
         }

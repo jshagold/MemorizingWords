@@ -5,4 +5,5 @@ object Route {
     const val WORD_LIST = "wordList"
     const val ADD_JAPANESE = "addJapanese"
     const val WORD_DETAIL = "wordDetail"
+    const val DRAW_LETTER = "drawLetter"
 }

@@ -13,3 +13,7 @@ fun NavController.navigateToWordList() {
 fun NavController.navigateToWordDetail(wordId: Long) {
     this.navigate("${Route.WORD_DETAIL}/$wordId")
 }
+
+fun NavController.navigateToDrawLetter(letter: String) {
+    this.navigate("${Route.DRAW_LETTER}/$letter")
+}
