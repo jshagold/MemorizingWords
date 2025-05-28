@@ -19,6 +19,12 @@ interface JapaneseDao {
     @Delete
     suspend fun deleteWord(word: Japanese)
 
+    @Query("DELETE FROM japanese WHERE id = :id")
+    suspend fun deleteWordById(id: Long)
+
+    @Query("SELECT * FROM japanese WHERE id = :id")
+    fun getWordById(id: Long): Japanese
+
     @Query("SELECT * FROM japanese")
     fun getAllWords(): List<Japanese>
 

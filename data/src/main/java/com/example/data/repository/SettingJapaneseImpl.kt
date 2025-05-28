@@ -15,6 +15,6 @@ class SettingJapaneseImpl @Inject constructor(
     }
 
     override suspend fun deleteJapaneseWord(word: JapaneseWord) {
-        japaneseDao.deleteWord(word.toData().toEntity())
+        japaneseDao.deleteWordById(word.id)
     }
 }

@@ -5,6 +5,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.core.constants.Paging.PAGE_SIZE
 import com.example.data.datasource.JapanesePagingSource
+import com.example.data.mapper.toData
+import com.example.data.mapper.toDomain
 import com.example.database.dao.JapaneseDao
 import com.example.domain.repository.model.JapaneseWord
 import com.example.domain.repository.repository.StudyJapanese
@@ -25,5 +27,9 @@ class StudyJapaneseImpl @Inject constructor(
             pagingSourceFactory = { JapanesePagingSource(japaneseDao) }
         ).flow
             .flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun getWordById(id: Long): JapaneseWord {
+        return japaneseDao.getWordById(id).toData().toDomain()
     }
 }
