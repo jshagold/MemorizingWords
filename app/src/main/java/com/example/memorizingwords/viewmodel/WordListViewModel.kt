@@ -11,13 +11,16 @@ import com.example.domain.repository.repository.StudyJapanese
 import com.example.memorizingwords.mapper.toUI
 import com.example.memorizingwords.model.JapaneseWord
 import com.example.memorizingwords.state.WordListScreenState
+import com.example.memorizingwords.trigger.JapaneseWordPagingRefreshTrigger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -28,24 +31,29 @@ import javax.inject.Inject
 class WordListViewModel @Inject constructor(
     application: Application,
     private val japaneseRepository: StudyJapanese,
+    private val pagingTrigger: JapaneseWordPagingRefreshTrigger,
 ) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-
+//            screenState.flatMapLatest {  }
         }
     }
 
     private var _screenState: MutableStateFlow<WordListScreenState> = MutableStateFlow(WordListScreenState())
     val screenState: StateFlow<WordListScreenState> = _screenState.asStateFlow()
 
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     val japanesePagingWordList: StateFlow<PagingData<JapaneseWord>> =
-        japaneseRepository.getAllWordListByPage()
-            .map { pagingData ->
-                pagingData.map { wordDomain ->
-                    wordDomain.toUI()
+        pagingTrigger.refreshState.flatMapLatest {
+            japaneseRepository.getAllWordListByPage()
+                .map { pagingData ->
+                    pagingData.map { wordDomain ->
+                        wordDomain.toUI()
+                    }
                 }
-            }
+        }
             .flowOn(Dispatchers.IO)
             .cachedIn(viewModelScope)
             .stateIn(
@@ -53,6 +61,4 @@ class WordListViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = PagingData.empty(),
             )
-
-
 }
