@@ -47,7 +47,8 @@ fun AutoResizingText(
                     maxWidth = containerSize.width,
                     maxHeight = containerSize.height
                 ),
-                maxLines = maxLines
+                maxLines = maxLines,
+                softWrap = false,
             )
             if (!textLayoutResult.hasVisualOverflow) {
                 break
@@ -59,14 +60,13 @@ fun AutoResizingText(
 
     Box(
         modifier = modifier
-            .onSizeChanged { containerSize = it }
+            .onSizeChanged { containerSize = IntSize(it.width - 10, it.height) }
     ) {
         Text(
             text = text,
             color = Color.Gray,
             fontSize = textSize,
             maxLines = maxLines,
-            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .align(Alignment.Center)
         )

@@ -2,6 +2,7 @@ package com.example.memorizingwords.ui.screen
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitTouchSlopOrCancellation
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -88,6 +90,7 @@ fun DrawLetterScreen(
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
+                    .border(width = 2.dp, Color.Black, RoundedCornerShape(3.dp))
                     .pointerInput(Unit) {
                         awaitEachGesture {
                             val down = awaitFirstDown()
