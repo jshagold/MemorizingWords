@@ -7,6 +7,7 @@ import com.example.database.model.Japanese as JapaneseEntity
 
 fun Japanese.toEntity(): JapaneseEntity {
     return JapaneseEntity(
+        id = this.id,
         kanji = this.kanji,
         hiragana = this.hiragana,
         korean = this.korean,

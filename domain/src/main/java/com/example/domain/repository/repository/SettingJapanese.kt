@@ -7,4 +7,6 @@ interface SettingJapanese {
     suspend fun setJapaneseWord(word: JapaneseWord)
 
     suspend fun deleteJapaneseWord(word: JapaneseWord)
+
+    suspend fun updateJapaneseWord(word: JapaneseWord)
 }
