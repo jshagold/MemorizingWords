@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.database.model.Japanese
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface JapaneseDao {
@@ -23,7 +24,7 @@ interface JapaneseDao {
     suspend fun deleteWordById(id: Long)
 
     @Query("SELECT * FROM japanese WHERE id = :id")
-    fun getWordById(id: Long): Japanese
+    fun getWordById(id: Long): Flow<Japanese>
 
     @Query("SELECT * FROM japanese")
     fun getAllWords(): List<Japanese>

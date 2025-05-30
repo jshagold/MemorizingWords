@@ -13,6 +13,7 @@ import com.example.domain.repository.repository.StudyJapanese
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class StudyJapaneseImpl @Inject constructor(
@@ -29,7 +30,9 @@ class StudyJapaneseImpl @Inject constructor(
             .flowOn(Dispatchers.IO)
     }
 
-    override suspend fun getWordById(id: Long): JapaneseWord {
-        return japaneseDao.getWordById(id).toData().toDomain()
+    override fun getWordById(id: Long): Flow<JapaneseWord> {
+        return japaneseDao.getWordById(id).map {
+            it.toData().toDomain()
+        }
     }
 }
