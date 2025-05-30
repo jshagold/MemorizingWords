@@ -105,6 +105,7 @@ fun DropdownComponent(
                     },
                     onClick = {
                         selectElement(index)
+                        expanded = false
                     },
                 )
             }

@@ -1,13 +1,17 @@
 package com.example.memorizingwords.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.repository.usecase.DeleteJapaneseWordUseCase
 import com.example.domain.repository.usecase.GetJapaneseWordUseCase
+import com.example.domain.repository.usecase.UpdateJapaneseWordUseCase
+import com.example.memorizingwords.mapper.toDomain
 import com.example.memorizingwords.mapper.toUI
 import com.example.memorizingwords.model.JapaneseWord
+import com.example.domain.repository.model.JapaneseWord as JapaneseWordDomain
 import com.example.memorizingwords.model.PartOfSpeechType
 import com.example.memorizingwords.state.ModifyWordDataScreenState
 import com.example.memorizingwords.trigger.JapaneseWordPagingRefreshTrigger
@@ -16,6 +20,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,23 +32,27 @@ class ModifyWordDataViewModel @Inject constructor(
     application: Application,
     savedStateHandle: SavedStateHandle,
     private val getJapaneseWordUseCase: GetJapaneseWordUseCase,
-    private val deleteJapaneseWordUseCase: DeleteJapaneseWordUseCase,
+    private val updateJapaneseWordUseCase: UpdateJapaneseWordUseCase,
     private val pagingTrigger: JapaneseWordPagingRefreshTrigger,
 ) : AndroidViewModel(application)  {
 
     private val routeArgument: String? = savedStateHandle["wordId"]
     private val wordId: Long? = routeArgument?.toLong()
 
-    private lateinit var _screenState: MutableStateFlow<ModifyWordDataScreenState>
+    private var _screenState: MutableStateFlow<ModifyWordDataScreenState> = MutableStateFlow(ModifyWordDataScreenState())
     val screenState: StateFlow<ModifyWordDataScreenState> = _screenState.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             wordId?.let { wordId ->
-                val word: JapaneseWord = getJapaneseWordUseCase(wordId).toUI()
-
-                withContext(Dispatchers.Main) {
-                    _screenState = MutableStateFlow(ModifyWordDataScreenState(word = word))
+                getJapaneseWordUseCase(wordId).collectLatest { word: JapaneseWordDomain ->
+                    withContext(Dispatchers.Main) {
+                        _screenState.update {
+                            it.copy(
+                                word = word.toUI()
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -50,9 +60,13 @@ class ModifyWordDataViewModel @Inject constructor(
 
 
     fun onChangeKanji(value: String) {
+        val changedWord = screenState.value.word.copy(
+            kanji = value
+        )
+        Log.e("TAG", "onChangeKanji: $changedWord", )
         _screenState.update {
             it.copy(
-                word = it.word.copy(kanji = value)
+                word = changedWord
             )
         }
     }
@@ -84,7 +98,7 @@ class ModifyWordDataViewModel @Inject constructor(
     fun onChangeExample(value: String) {
         _screenState.update {
             it.copy(
-                word = it.word.copy(korean = listOf(value))
+                word = it.word.copy(exampleSentence = listOf(value))
             )
         }
     }
@@ -97,7 +111,16 @@ class ModifyWordDataViewModel @Inject constructor(
         }
     }
 
-    fun onModifyBtn() {
+    fun onModifyBtn(callback: () -> Unit) {
+        val word = screenState.value.word
 
+        viewModelScope.launch(Dispatchers.IO) {
+            updateJapaneseWordUseCase(word.toDomain())
+
+            pagingTrigger.notifyRefresh()
+            withContext(Dispatchers.Main) {
+                callback()
+            }
+        }
     }
 }

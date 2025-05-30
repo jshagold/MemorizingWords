@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.memorizingwords.TemporaryScreen
 import com.example.memorizingwords.ui.screen.AddJapaneseWordRoute
 import com.example.memorizingwords.ui.screen.DrawLetterRoute
+import com.example.memorizingwords.ui.screen.ModifyWordDataRoute
 import com.example.memorizingwords.ui.screen.WordDetailRoute
 import com.example.memorizingwords.ui.screen.WordListRoute
 
@@ -54,7 +55,14 @@ fun MainNavHost(
         composable(route = "${Route.WORD_DETAIL}/{wordId}") {
             WordDetailRoute(
                 onBackScreen = { navController.popBackStack() },
-                navigateToDrawLetter = { navController.navigateToDrawLetter(it) }
+                navigateToDrawLetter = { navController.navigateToDrawLetter(it) },
+                navigateToModifyWordData = { navController.navigateToModifyWordData(it) }
+            )
+        }
+
+        composable(route = "${Route.MODIFY_WORD}/{wordId}") {
+            ModifyWordDataRoute(
+                onBackScreen = { navController.popBackStack() },
             )
         }
 

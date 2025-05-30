@@ -51,13 +51,13 @@ fun ModifyWordDataRoute(
         modifier = modifier,
         screenState = screenState,
         onBackScreen = onBackScreen,
-        onChangeKanji = ,
-        onChangeHiragana = ,
-        onChangeKorean = ,
-        onChangePOS = ,
-        onChangeExample = ,
-        onChangeFavorite = ,
-        onModifyBtn =
+        onChangeKanji = viewModel::onChangeKanji,
+        onChangeHiragana = viewModel::onChangeHiragana,
+        onChangeKorean = viewModel::onChangeKorean,
+        onChangePOS = viewModel::onChangePOS,
+        onChangeExample = viewModel::onChangeExample,
+        onChangeFavorite = viewModel::onChangeFavorite,
+        onModifyBtn = { viewModel.onModifyBtn { onBackScreen() } }
     )
 }
 
@@ -131,7 +131,7 @@ fun ModifyWordDataScreen(
             modifier = Modifier
         )
         EditText(
-            inputText = screenState.word.korean.toString(),
+            inputText = screenState.word.korean.firstOrNull() ?: "",
             borderColor = Color.Gray,
             paddingHorizontal = 10.dp,
             paddingVertical = 10.dp,
@@ -160,7 +160,7 @@ fun ModifyWordDataScreen(
             modifier = Modifier
         )
         EditText(
-            inputText = screenState.word.exampleSentence.toString(),
+            inputText = screenState.word.exampleSentence.firstOrNull() ?: "",
             borderColor = Color.Gray,
             paddingHorizontal = 10.dp,
             paddingVertical = 10.dp,
@@ -176,7 +176,7 @@ fun ModifyWordDataScreen(
             modifier = Modifier
         )
         Text(
-            text = "true",
+            text = screenState.word.isFavorite.toString(),
             fontWeight = FontWeight.Black,
             modifier = Modifier
                 .border(2.dp, Color.Black, RoundedCornerShape(5.dp))

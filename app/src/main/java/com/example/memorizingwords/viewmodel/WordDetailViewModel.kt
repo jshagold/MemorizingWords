@@ -17,6 +17,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -40,13 +47,13 @@ class WordDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             wordId?.let { wordId ->
-                val word: JapaneseWord = getJapaneseWordUseCase(wordId).toUI()
-
-                withContext(Dispatchers.Main) {
-                    _screenState.update {
-                        it.copy(
-                            word = word
-                        )
+                getJapaneseWordUseCase(wordId).collectLatest { word: JapaneseWordDomain ->
+                    withContext(Dispatchers.Main) {
+                        _screenState.update {
+                            it.copy(
+                                word = word.toUI()
+                            )
+                        }
                     }
                 }
             }
