@@ -25,6 +25,9 @@ interface JapaneseDao {
     @Query("DELETE FROM japanese WHERE id = :id")
     suspend fun deleteWordById(id: Long)
 
+    @Query("SELECT id FROM japanese")
+    fun getAllIdList(): Flow<List<Long>>
+
     @Query("SELECT * FROM japanese WHERE id = :id")
     fun getWordById(id: Long): Flow<Japanese?>
 
