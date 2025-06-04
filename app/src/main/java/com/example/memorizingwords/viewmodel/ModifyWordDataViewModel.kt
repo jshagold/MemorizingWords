@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,11 +44,11 @@ class ModifyWordDataViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             wordId?.let { wordId ->
-                getJapaneseWordUseCase(wordId).collectLatest { word: JapaneseWordDomain ->
+                getJapaneseWordUseCase(wordId).collectLatest { word: JapaneseWordDomain? ->
                     withContext(Dispatchers.Main) {
                         _screenState.update {
                             it.copy(
-                                word = word.toUI()
+                                word = word?.toUI()
                             )
                         }
                     }
@@ -60,7 +59,7 @@ class ModifyWordDataViewModel @Inject constructor(
 
 
     fun onChangeKanji(value: String) {
-        val changedWord = screenState.value.word.copy(
+        val changedWord = screenState.value.word?.copy(
             kanji = value
         )
         Log.e("TAG", "onChangeKanji: $changedWord", )
@@ -74,7 +73,7 @@ class ModifyWordDataViewModel @Inject constructor(
     fun onChangeHiragana(value: String) {
         _screenState.update {
             it.copy(
-                word = it.word.copy(hiragana = value)
+                word = it.word?.copy(hiragana = value)
             )
         }
     }
@@ -82,7 +81,7 @@ class ModifyWordDataViewModel @Inject constructor(
     fun onChangeKorean(value: String) {
         _screenState.update {
             it.copy(
-                word = it.word.copy(korean = listOf(value))
+                word = it.word?.copy(korean = listOf(value))
             )
         }
     }
@@ -90,7 +89,7 @@ class ModifyWordDataViewModel @Inject constructor(
     fun onChangePOS(index: Int) {
         _screenState.update {
             it.copy(
-                word = it.word.copy(partOfSpeech = PartOfSpeechType.entries[index])
+                word = it.word?.copy(partOfSpeech = PartOfSpeechType.entries[index])
             )
         }
     }
@@ -98,7 +97,7 @@ class ModifyWordDataViewModel @Inject constructor(
     fun onChangeExample(value: String) {
         _screenState.update {
             it.copy(
-                word = it.word.copy(exampleSentence = listOf(value))
+                word = it.word?.copy(exampleSentence = listOf(value))
             )
         }
     }
@@ -106,7 +105,7 @@ class ModifyWordDataViewModel @Inject constructor(
     fun onChangeFavorite() {
         _screenState.update {
             it.copy(
-                word = it.word.copy(isFavorite = !it.word.isFavorite)
+                word = it.word?.copy(isFavorite = !it.word.isFavorite)
             )
         }
     }
@@ -115,11 +114,13 @@ class ModifyWordDataViewModel @Inject constructor(
         val word = screenState.value.word
 
         viewModelScope.launch(Dispatchers.IO) {
-            updateJapaneseWordUseCase(word.toDomain())
+            word?.let {
+                updateJapaneseWordUseCase(word.toDomain())
 
-            pagingTrigger.notifyRefresh()
-            withContext(Dispatchers.Main) {
-                callback()
+                pagingTrigger.notifyRefresh()
+                withContext(Dispatchers.Main) {
+                    callback()
+                }
             }
         }
     }

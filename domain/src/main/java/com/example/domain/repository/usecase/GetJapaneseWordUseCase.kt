@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetJapaneseWordUseCase @Inject constructor(
     private val studyJapanese: StudyJapanese
 ) {
-    operator fun invoke(wordId: Long): Flow<JapaneseWord> {
+    operator fun invoke(wordId: Long): Flow<JapaneseWord?> {
         return studyJapanese.getWordById(wordId)
     }
 }

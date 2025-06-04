@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -75,9 +77,12 @@ fun ModifyWordDataScreen(
     onChangeFavorite: () -> Unit = {},
     onModifyBtn: () -> Unit = {},
 ) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
             .padding(10.dp)
     ) {
         Text(
@@ -99,7 +104,7 @@ fun ModifyWordDataScreen(
             modifier = Modifier
         )
         EditText(
-            inputText = screenState.word.kanji ?: "",
+            inputText = screenState.word?.kanji ?: "",
             borderColor = Color.Gray,
             paddingHorizontal = 10.dp,
             paddingVertical = 10.dp,
@@ -115,7 +120,7 @@ fun ModifyWordDataScreen(
             modifier = Modifier
         )
         EditText(
-            inputText = screenState.word.hiragana,
+            inputText = screenState.word?.hiragana ?: "",
             borderColor = Color.Gray,
             paddingHorizontal = 10.dp,
             paddingVertical = 10.dp,
@@ -131,7 +136,7 @@ fun ModifyWordDataScreen(
             modifier = Modifier
         )
         EditText(
-            inputText = screenState.word.korean.firstOrNull() ?: "",
+            inputText = screenState.word?.korean?.firstOrNull() ?: "",
             borderColor = Color.Gray,
             paddingHorizontal = 10.dp,
             paddingVertical = 10.dp,
@@ -147,7 +152,7 @@ fun ModifyWordDataScreen(
             modifier = Modifier
         )
         DropdownComponent(
-            selectButtonText = screenState.word.partOfSpeech.korean,
+            selectButtonText = screenState.word?.partOfSpeech?.korean ?: "",
             dataList = PartOfSpeechType.entries.map { it.korean },
             selectElement = onChangePOS,
         )
@@ -160,7 +165,7 @@ fun ModifyWordDataScreen(
             modifier = Modifier
         )
         EditText(
-            inputText = screenState.word.exampleSentence.firstOrNull() ?: "",
+            inputText = screenState.word?.exampleSentence?.firstOrNull() ?: "",
             borderColor = Color.Gray,
             paddingHorizontal = 10.dp,
             paddingVertical = 10.dp,
@@ -176,7 +181,7 @@ fun ModifyWordDataScreen(
             modifier = Modifier
         )
         Text(
-            text = screenState.word.isFavorite.toString(),
+            text = screenState.word?.isFavorite.toString(),
             fontWeight = FontWeight.Black,
             modifier = Modifier
                 .border(2.dp, Color.Black, RoundedCornerShape(5.dp))

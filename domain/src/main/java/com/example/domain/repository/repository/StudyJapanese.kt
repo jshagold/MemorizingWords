@@ -9,5 +9,7 @@ interface StudyJapanese {
 
     fun getAllWordListByPage(): Flow<PagingData<JapaneseWord>>
 
-    fun getWordById(id: Long): Flow<JapaneseWord>
+    fun getWordListByPageAndKeyWord(keyword: String): Flow<PagingData<JapaneseWord>>
+
+    fun getWordById(id: Long): Flow<JapaneseWord?>
 }

@@ -1,5 +1,7 @@
 package com.example.database.dao
 
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -24,7 +26,7 @@ interface JapaneseDao {
     suspend fun deleteWordById(id: Long)
 
     @Query("SELECT * FROM japanese WHERE id = :id")
-    fun getWordById(id: Long): Flow<Japanese>
+    fun getWordById(id: Long): Flow<Japanese?>
 
     @Query("SELECT * FROM japanese")
     fun getAllWords(): List<Japanese>
@@ -43,4 +45,7 @@ interface JapaneseDao {
 
     @Query("SELECT * FROM japanese ORDER BY korean LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
     fun getWordListByPageAndKorean(page: Int, pageSize: Int): List<Japanese>
+
+    @Query("SELECT * FROM japanese WHERE kanji LIKE '%' || :keyword || '%'")
+    fun getWordListByPageAndKeyword(keyword: String): PagingSource<Int, Japanese>
 }

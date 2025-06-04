@@ -3,6 +3,7 @@ package com.example.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import com.example.core.constants.Paging.PAGE_SIZE
 import com.example.data.datasource.JapanesePagingSource
 import com.example.data.mapper.toData
@@ -30,9 +31,22 @@ class StudyJapaneseImpl @Inject constructor(
             .flowOn(Dispatchers.IO)
     }
 
-    override fun getWordById(id: Long): Flow<JapaneseWord> {
+    override fun getWordListByPageAndKeyWord(keyword: String): Flow<PagingData<JapaneseWord>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = false,
+                maxSize = PAGE_SIZE*3
+            ),
+            pagingSourceFactory = { japaneseDao.getWordListByPageAndKeyword(keyword = keyword) },
+        ).flow.map { pagingData ->
+            pagingData.map { it.toData().toDomain() }
+        }
+    }
+
+    override fun getWordById(id: Long): Flow<JapaneseWord?> {
         return japaneseDao.getWordById(id).map {
-            it.toData().toDomain()
+            it?.toData()?.toDomain()
         }
     }
 }

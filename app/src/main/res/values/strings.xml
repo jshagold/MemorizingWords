@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">MemorizingWords</string>
 
+    <string name="japanese_kanji">한자</string>
+    <string name="japanese_hiragana">히라가나</string>
+    <string name="japanese_korean">한글</string>
+
     <string name="sort_kanji">한자</string>
     <string name="sort_hiragana">히라가나</string>
     <string name="sort_korean">한글</string>

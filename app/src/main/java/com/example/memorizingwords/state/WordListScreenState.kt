@@ -1,8 +1,9 @@
 package com.example.memorizingwords.state
 
-import com.example.memorizingwords.model.JapaneseWord
-import com.example.memorizingwords.model.JapaneseWordSortedType
+import com.example.memorizingwords.model.JapaneseWordType
 
 data class WordListScreenState(
-    val sortType: JapaneseWordSortedType = JapaneseWordSortedType.HIRAGANA,
+    val keyword: String = "",
+    val searchType: JapaneseWordType = JapaneseWordType.KANJI,
+    val sortType: JapaneseWordType = JapaneseWordType.HIRAGANA,
 )

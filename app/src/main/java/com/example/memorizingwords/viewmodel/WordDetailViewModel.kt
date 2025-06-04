@@ -47,12 +47,14 @@ class WordDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             wordId?.let { wordId ->
-                getJapaneseWordUseCase(wordId).collectLatest { word: JapaneseWordDomain ->
+                getJapaneseWordUseCase(wordId).collectLatest { word: JapaneseWordDomain? ->
                     withContext(Dispatchers.Main) {
-                        _screenState.update {
-                            it.copy(
-                                word = word.toUI()
-                            )
+                        word?.let {
+                            _screenState.update {
+                                it.copy(
+                                    word = word.toUI()
+                                )
+                            }
                         }
                     }
                 }
@@ -64,11 +66,13 @@ class WordDetailViewModel @Inject constructor(
         callback: () -> Unit = {}
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteJapaneseWordUseCase(screenState.value.word.toDomain())
-            pagingTrigger.notifyRefresh()
+            screenState.value.word?.let {
+                deleteJapaneseWordUseCase(it.toDomain())
+                pagingTrigger.notifyRefresh()
 
-            withContext(Dispatchers.Main) {
-                callback()
+                withContext(Dispatchers.Main) {
+                    callback()
+                }
             }
         }
     }

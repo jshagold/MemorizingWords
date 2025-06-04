@@ -74,7 +74,9 @@ fun WordDetailRoute(
         screenState = screenState,
         onBackScreen = onBackScreen,
         onUpdateWord = {
-            navigateToModifyWordData(screenState.word.id)
+            screenState.word?.let {
+                navigateToModifyWordData(it.id)
+            }
         },
         onDeleteWord = {
             viewModel.deleteWord {
@@ -82,7 +84,9 @@ fun WordDetailRoute(
             }
         },
         onClickDrawBtn = {
-            navigateToDrawLetter(screenState.word.kanji ?: "")
+            screenState.word?.let {
+                navigateToDrawLetter(it.kanji ?: "")
+            }
         }
     )
 }
@@ -107,7 +111,7 @@ fun WordDetailScreen(
     ) {
 
         Text(
-            text = "<- ${screenState.word.id}",
+            text = "<- ${screenState.word?.id}",
             style = TextStyle(fontSize = FontSize.Main, fontWeight = FontWeight.Black),
             modifier = Modifier
                 .border(2.dp, Color.Black, RoundedCornerShape(5.dp))
@@ -154,7 +158,7 @@ fun WordDetailScreen(
                     }
             )
             Text(
-                text = screenState.word.kanji ?: "",
+                text = screenState.word?.kanji ?: "",
                 style = TextStyle(fontSize = FontSize.Main),
                 modifier = Modifier
                     .constrainAs(valueKanjiRef) {
@@ -180,7 +184,7 @@ fun WordDetailScreen(
                     }
             )
             Text(
-                text = screenState.word.hiragana,
+                text = screenState.word?.hiragana ?: "",
                 style = TextStyle(fontSize = FontSize.Main),
                 modifier = Modifier
                     .constrainAs(valueHiraganaRef) {
@@ -206,7 +210,7 @@ fun WordDetailScreen(
                     }
             )
             Text(
-                text = screenState.word.korean.toString(),
+                text = screenState.word?.korean.toString(),
                 style = TextStyle(fontSize = FontSize.Main),
                 modifier = Modifier
                     .constrainAs(valueKoreanRef) {
@@ -232,7 +236,7 @@ fun WordDetailScreen(
                     }
             )
             Text(
-                text = screenState.word.partOfSpeech.korean,
+                text = screenState.word?.partOfSpeech?.korean ?: "",
                 style = TextStyle(fontSize = FontSize.Main),
                 modifier = Modifier
                     .constrainAs(valuePOSRef) {
@@ -258,7 +262,7 @@ fun WordDetailScreen(
                     }
             )
             Text(
-                text = screenState.word.exampleSentence.toString(),
+                text = screenState.word?.exampleSentence.toString(),
                 style = TextStyle(fontSize = FontSize.Main),
                 modifier = Modifier
                     .constrainAs(valueExampleRef) {
@@ -284,7 +288,7 @@ fun WordDetailScreen(
                     }
             )
             Text(
-                text = screenState.word.isFavorite.toString(),
+                text = screenState.word?.isFavorite.toString(),
                 style = TextStyle(fontSize = FontSize.Main),
                 modifier = Modifier
                     .constrainAs(valueFavoriteRef) {
@@ -309,7 +313,7 @@ fun WordDetailScreen(
                     }
             )
             Text(
-                text = screenState.word.lastStudiedAt.toString(),
+                text = screenState.word?.lastStudiedAt.toString(),
                 style = TextStyle(fontSize = FontSize.Main),
                 modifier = Modifier
                     .constrainAs(valueDateRef) {
