@@ -5,10 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.repository.usecase.DeleteJapaneseWordUseCase
-import com.example.domain.repository.usecase.GetJapaneseWordUseCase
+import com.example.domain.repository.usecase.GetJapaneseWordByIdUseCase
 import com.example.memorizingwords.mapper.toDomain
 import com.example.memorizingwords.mapper.toUI
-import com.example.memorizingwords.model.JapaneseWord
 import com.example.domain.repository.model.JapaneseWord as JapaneseWordDomain
 import com.example.memorizingwords.state.WordDetailScreenState
 import com.example.memorizingwords.trigger.JapaneseWordPagingRefreshTrigger
@@ -17,13 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,7 +26,7 @@ import javax.inject.Inject
 class WordDetailViewModel @Inject constructor(
     application: Application,
     savedStateHandle: SavedStateHandle,
-    private val getJapaneseWordUseCase: GetJapaneseWordUseCase,
+    private val getJapaneseWordByIdUseCase: GetJapaneseWordByIdUseCase,
     private val deleteJapaneseWordUseCase: DeleteJapaneseWordUseCase,
     private val pagingTrigger: JapaneseWordPagingRefreshTrigger,
 ) : AndroidViewModel(application) {
@@ -47,7 +40,7 @@ class WordDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             wordId?.let { wordId ->
-                getJapaneseWordUseCase(wordId).collectLatest { word: JapaneseWordDomain? ->
+                getJapaneseWordByIdUseCase(wordId).collectLatest { word: JapaneseWordDomain? ->
                     withContext(Dispatchers.Main) {
                         word?.let {
                             _screenState.update {

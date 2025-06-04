@@ -10,6 +10,10 @@ fun NavController.navigateToWordList() {
     this.navigate(Route.WORD_LIST)
 }
 
+fun NavController.navigateToRandomWord() {
+    this.navigate(Route.RANDOM_WORD)
+}
+
 fun NavController.navigateToWordDetail(wordId: Long) {
     this.navigate("${Route.WORD_DETAIL}/$wordId")
 }

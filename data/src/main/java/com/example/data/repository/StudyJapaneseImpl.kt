@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.core.constants.Paging.PAGE_SIZE
 import com.example.data.datasource.JapanesePagingSource
+import com.example.data.datasource.RandomJapaneseWordPagingSource
 import com.example.data.mapper.toData
 import com.example.data.mapper.toDomain
 import com.example.database.dao.JapaneseDao
@@ -48,5 +49,16 @@ class StudyJapaneseImpl @Inject constructor(
         return japaneseDao.getWordById(id).map {
             it?.toData()?.toDomain()
         }
+    }
+
+    override fun getRandomWordList(idList: List<Long>): Flow<PagingData<JapaneseWord>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = false,
+            ),
+            pagingSourceFactory = { RandomJapaneseWordPagingSource(japaneseDao, idList) }
+        ).flow
+            .flowOn(Dispatchers.IO)
     }
 }

@@ -12,4 +12,6 @@ interface StudyJapanese {
     fun getWordListByPageAndKeyWord(keyword: String): Flow<PagingData<JapaneseWord>>
 
     fun getWordById(id: Long): Flow<JapaneseWord?>
+
+    fun getRandomWordList(idList: List<Long>): Flow<PagingData<JapaneseWord>>
 }

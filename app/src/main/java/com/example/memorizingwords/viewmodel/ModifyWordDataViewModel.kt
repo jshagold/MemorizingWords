@@ -5,12 +5,10 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.domain.repository.usecase.DeleteJapaneseWordUseCase
-import com.example.domain.repository.usecase.GetJapaneseWordUseCase
+import com.example.domain.repository.usecase.GetJapaneseWordByIdUseCase
 import com.example.domain.repository.usecase.UpdateJapaneseWordUseCase
 import com.example.memorizingwords.mapper.toDomain
 import com.example.memorizingwords.mapper.toUI
-import com.example.memorizingwords.model.JapaneseWord
 import com.example.domain.repository.model.JapaneseWord as JapaneseWordDomain
 import com.example.memorizingwords.model.PartOfSpeechType
 import com.example.memorizingwords.state.ModifyWordDataScreenState
@@ -30,7 +28,7 @@ import javax.inject.Inject
 class ModifyWordDataViewModel @Inject constructor(
     application: Application,
     savedStateHandle: SavedStateHandle,
-    private val getJapaneseWordUseCase: GetJapaneseWordUseCase,
+    private val getJapaneseWordByIdUseCase: GetJapaneseWordByIdUseCase,
     private val updateJapaneseWordUseCase: UpdateJapaneseWordUseCase,
     private val pagingTrigger: JapaneseWordPagingRefreshTrigger,
 ) : AndroidViewModel(application)  {
@@ -44,7 +42,7 @@ class ModifyWordDataViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             wordId?.let { wordId ->
-                getJapaneseWordUseCase(wordId).collectLatest { word: JapaneseWordDomain? ->
+                getJapaneseWordByIdUseCase(wordId).collectLatest { word: JapaneseWordDomain? ->
                     withContext(Dispatchers.Main) {
                         _screenState.update {
                             it.copy(

@@ -12,6 +12,7 @@ import com.example.memorizingwords.TemporaryScreen
 import com.example.memorizingwords.ui.screen.AddJapaneseWordRoute
 import com.example.memorizingwords.ui.screen.DrawLetterRoute
 import com.example.memorizingwords.ui.screen.ModifyWordDataRoute
+import com.example.memorizingwords.ui.screen.RandomWordRoute
 import com.example.memorizingwords.ui.screen.WordDetailRoute
 import com.example.memorizingwords.ui.screen.WordListRoute
 
@@ -36,6 +37,9 @@ fun MainNavHost(
                 },
                 navigateToAddJapanese = {
                     navController.navigateToAddJapanese()
+                },
+                navigateToRandomWord = {
+                    navController.navigateToRandomWord()
                 }
             )
         }
@@ -50,6 +54,10 @@ fun MainNavHost(
                     navController.navigateToWordDetail(wordId)
                 }
             )
+        }
+
+        composable(route = Route.RANDOM_WORD) {
+            RandomWordRoute()
         }
 
         composable(route = "${Route.WORD_DETAIL}/{wordId}") {

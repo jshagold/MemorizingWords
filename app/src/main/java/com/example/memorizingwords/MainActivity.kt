@@ -81,7 +81,8 @@ class MainActivity : ComponentActivity() {
 fun TemporaryScreen(
     modifier: Modifier = Modifier,
     navigateToAddJapanese: () -> Unit = {},
-    navigateToWordList: () -> Unit = {}
+    navigateToWordList: () -> Unit = {},
+    navigateToRandomWord: () -> Unit = {}
 ) {
 
     Column(
@@ -100,7 +101,15 @@ fun TemporaryScreen(
             onClick = navigateToWordList
         ) {
             Text(
-                text = "word list"
+                text = "whole word list"
+            )
+        }
+
+        Button(
+            onClick = navigateToRandomWord
+        ) {
+            Text(
+                text = "Study Random Word"
             )
         }
     }
