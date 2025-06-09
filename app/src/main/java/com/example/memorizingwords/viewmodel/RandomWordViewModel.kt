@@ -66,6 +66,29 @@ class RandomWordViewModel @Inject constructor(
         }
     }
 
+    fun onClickBackBtn() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val index = if(screenState.value.index <= 0) {
+                0
+            } else {
+                screenState.value.index - 1
+            }
+
+            val beforeWord = getJapaneseWordByIdUseCase(randomIdList[index]).first()
+            beforeWord?.let { word ->
+                withContext(Dispatchers.Main) {
+                    _screenState.update {
+                        it.copy(
+                            index = index,
+                            word = word.toUI()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
     fun onClickNextBtn() {
         viewModelScope.launch(Dispatchers.IO) {
             val index = if(screenState.value.index >= randomIdList.lastIndex) {

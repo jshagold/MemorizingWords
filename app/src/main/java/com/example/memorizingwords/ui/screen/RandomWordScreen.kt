@@ -2,6 +2,7 @@ package com.example.memorizingwords.ui.screen
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.memorizingwords.model.JapaneseWordType
 import com.example.memorizingwords.state.RandomWordScreenState
+import com.example.memorizingwords.ui.components.AutoResizingText
 import com.example.memorizingwords.viewmodel.RandomWordViewModel
 import org.checkerframework.checker.units.qual.C
 
@@ -29,6 +31,7 @@ fun PreviewRandomWordScreen() {
     RandomWordScreen(
         screenState = RandomWordScreenState(),
         onClickTextCard = {},
+        onClickBackBtn = {},
         onClickNextBtn = {}
     )
 }
@@ -43,6 +46,7 @@ fun RandomWordRoute(
     RandomWordScreen(
         screenState = screenState,
         onClickTextCard = viewModel::onClickTextCard,
+        onClickBackBtn = viewModel::onClickBackBtn,
         onClickNextBtn = viewModel::onClickNextBtn
     )
 }
@@ -52,6 +56,7 @@ fun RandomWordRoute(
 fun RandomWordScreen(
     screenState: RandomWordScreenState,
     onClickTextCard: () -> Unit,
+    onClickBackBtn: () -> Unit,
     onClickNextBtn: () -> Unit,
 ) {
     val text = when(screenState.type) {
@@ -70,18 +75,32 @@ fun RandomWordScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        val (textRef, nextBtnRef) = createRefs()
+        val (textRef, backBtnRef, nextBtnRef) = createRefs()
 
-        Text(
+        Button(
+            onClick = onClickBackBtn,
+            modifier = Modifier
+                .constrainAs(backBtnRef) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(textRef.start)
+                }
+        ) {
+            Text("back")
+        }
+
+        AutoResizingText(
             text = text,
             modifier = Modifier
+                .aspectRatio(1f)
                 .border(1.dp, Color.Gray, RoundedCornerShape(5.dp))
                 .padding(10.dp)
                 .clickable { onClickTextCard() }
                 .constrainAs(textRef) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
+                    start.linkTo(backBtnRef.end)
                     end.linkTo(nextBtnRef.start)
                     width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
