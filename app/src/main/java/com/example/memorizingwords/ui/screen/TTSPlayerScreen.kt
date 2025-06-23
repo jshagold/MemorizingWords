@@ -22,10 +22,6 @@ fun TTSPlayerRoute(
     val context = LocalContext.current
     val exoPlayer = rememberExoPlayer(context)
 
-    LaunchedEffect() {
-
-    }
-
 
     TTSPlayerScreen(
         modifier = modifier,
