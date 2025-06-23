@@ -82,7 +82,8 @@ fun TemporaryScreen(
     modifier: Modifier = Modifier,
     navigateToAddJapanese: () -> Unit = {},
     navigateToWordList: () -> Unit = {},
-    navigateToRandomWord: () -> Unit = {}
+    navigateToRandomWord: () -> Unit = {},
+    navigateToTTSPlayer: () -> Unit = {},
 ) {
 
     Column(
@@ -110,6 +111,14 @@ fun TemporaryScreen(
         ) {
             Text(
                 text = "Study Random Word"
+            )
+        }
+
+        Button(
+            onClick = navigateToTTSPlayer
+        ) {
+            Text(
+                text = "TTS Player"
             )
         }
     }

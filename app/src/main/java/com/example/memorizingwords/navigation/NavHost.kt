@@ -13,6 +13,7 @@ import com.example.memorizingwords.ui.screen.AddJapaneseWordRoute
 import com.example.memorizingwords.ui.screen.DrawLetterRoute
 import com.example.memorizingwords.ui.screen.ModifyWordDataRoute
 import com.example.memorizingwords.ui.screen.RandomWordRoute
+import com.example.memorizingwords.ui.screen.TTSPlayerRoute
 import com.example.memorizingwords.ui.screen.WordDetailRoute
 import com.example.memorizingwords.ui.screen.WordListRoute
 
@@ -40,6 +41,9 @@ fun MainNavHost(
                 },
                 navigateToRandomWord = {
                     navController.navigateToRandomWord()
+                },
+                navigateToTTSPlayer = {
+                    navController.navigateToTTSPlayer()
                 }
             )
         }
@@ -83,6 +87,11 @@ fun MainNavHost(
                     letter = letter
                 )
             }
+        }
+
+
+        composable(route = Route.TTS_PLAYER) {
+            TTSPlayerRoute()
         }
     }
 }

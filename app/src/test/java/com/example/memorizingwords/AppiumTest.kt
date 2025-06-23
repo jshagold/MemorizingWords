@@ -55,8 +55,6 @@ class AppiumTest {
         Thread.sleep(3000)
         val nextBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_next"))
         nextBtn.click()
-//        val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_left"))
-//        closeBtn.click()
     }
 
     @Test
@@ -67,38 +65,13 @@ class AppiumTest {
         println("All contexts: $contexts")
         val allowBtn = driver.findElement(AppiumBy.id("com.android.permissioncontroller:id/permission_allow_button"))
         allowBtn.click()
-//        val nextBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_next"))
-//        nextBtn.click()
-//        val eraseBtn = driver.findElement(AppiumBy.accessibilityId("erase_btn"))
-//        println("eraseBtn Text = ${eraseBtn.getAttribute("stateDescription")}")
-//
-//        eraseBtn.click()
-
-
     }
-
-    @Test
-    fun test_2_Close_Popup_TapTv() {
-        Thread.sleep(3000)
-        val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/iv_close"))
-        closeBtn.click()
-    }
-
 
 //    @Test
-//    fun test_3_WaitingScreen_And_Click_Next_Button() {
+//    fun test_2_Close_Popup_TapTv() {
 //        Thread.sleep(3000)
-//        println("testFindBackButton: ${driver.pageSource}", )
-//        val contexts = driver.contextHandles
-//        println("All contexts: $contexts")
-//        val nextBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_next"))
-//        nextBtn.click()
-////        val nextBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_next"))
-////        nextBtn.click()
-////        val eraseBtn = driver.findElement(AppiumBy.accessibilityId("erase_btn"))
-////        println("eraseBtn Text = ${eraseBtn.getAttribute("stateDescription")}")
-////
-////        eraseBtn.click()
+//        val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/iv_close"))
+//        closeBtn.click()
 //    }
 
 
@@ -158,7 +131,7 @@ class AppiumTest {
         println("Switched to context: $webviewContext")
 
         // 5. WebView 내부 요소 상호작용
-        val button = driver.findElement(By.xpath("//span[@class='x']") )
+        val button = driver.findElement(By.xpath("//span[text()='닫기']") )
         button.click()
     }
 
@@ -185,6 +158,7 @@ class AppiumTest {
         val button = driver.findElement(By.xpath("//img[@class='profile btn_cursor']") )
         button.click()
     }
+
 
     @Test
     fun test_6_Click_Login_Button_Login_Popup() {

@@ -25,3 +25,9 @@ fun NavController.navigateToModifyWordData(wordId: Long) {
 fun NavController.navigateToDrawLetter(letter: String) {
     this.navigate("${Route.DRAW_LETTER}/$letter")
 }
+
+
+
+fun NavController.navigateToTTSPlayer() {
+    this.navigate(Route.TTS_PLAYER)
+}

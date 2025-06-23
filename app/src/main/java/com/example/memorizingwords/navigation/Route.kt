@@ -8,4 +8,8 @@ object Route {
     const val WORD_DETAIL = "wordDetail"
     const val MODIFY_WORD = "modifyWord"
     const val DRAW_LETTER = "drawLetter"
+
+
+
+    const val TTS_PLAYER = "ttsPlayer"
 }

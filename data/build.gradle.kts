@@ -1,7 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+}
+
+val propertiesFile = project(":data").file("data.properties")
+val dataProperties = Properties().apply {
+    if (propertiesFile.exists()) {
+        propertiesFile.inputStream().use {
+            load(it)
+        }
+    }
 }
 
 android {
@@ -13,6 +24,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "SELVAS_TTS_HOST", dataProperties["SELVAS_TTS_HOST"].toString())
+        buildConfigField("String", "SELVAS_TTS_PORT", dataProperties["SELVAS_TTS_PORT"].toString())
     }
 
     buildTypes {
@@ -31,12 +45,19 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
     implementation(projects.core)
     implementation(projects.domain)
     implementation(projects.database)
+
+    // Selvas TTS
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("pttsnet_class.jar"))))
 
 
     implementation(libs.androidx.core.ktx)

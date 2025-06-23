@@ -88,6 +88,12 @@ dependencies {
     implementation(libs.paging)
     implementation(libs.paging.compose)
 
+    // Media3 ExoPlayer
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.exoplayer.dash)
+    implementation(libs.media3.ui)
+    implementation(libs.media3.ui.compose)
+
 
     implementation("io.appium:java-client:9.4.0")
     implementation("org.seleniumhq.selenium:selenium-java:4.28.0")
