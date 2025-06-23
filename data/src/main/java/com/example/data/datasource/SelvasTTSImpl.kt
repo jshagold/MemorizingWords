@@ -1,16 +1,12 @@
 package com.example.data.datasource
 
 import com.example.core.result.Result
-import com.example.data.tts.config.SelvasConfig
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import selvytts.Pttsnet
-import java.io.BufferedOutputStream
 import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 class SelvasTTSImpl @Inject constructor() : SelvasTTS {
