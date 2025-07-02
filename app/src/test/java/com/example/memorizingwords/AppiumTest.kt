@@ -26,13 +26,21 @@ class AppiumTest {
         private fun makeDriver(): AndroidDriver {
 
             val options = UiAutomator2Options()
-                .setDeviceName("R9TX706CB9J")
+//                .setDeviceName("R9TX706CB9J")
                 .setPlatformName(MobilePlatform.ANDROID)
                 .setApp(apkFilePath)
                 .setAutomationName(AutomationName.ANDROID_UIAUTOMATOR2)
                 .setAppPackage("com.plantym.mediaservice.moazine")
                 .setAppActivity("com.plantym.mediaservice.moazine.MainActivity")
                 .setNoReset(false)
+                .apply {
+                    setCapability("chromedriverAutodownload", true)
+                    setCapability("ensureWebviewsHavePages", false)
+                    setCapability("fullContextList", true)
+                    setCapability("autoWebviewTimeout", 20000)
+                }
+
+
 
             return AndroidDriver(URL(DEFAULT_APPIUM_ADDRESS), options)
         }
@@ -67,12 +75,12 @@ class AppiumTest {
         allowBtn.click()
     }
 
-//    @Test
-//    fun test_2_Close_Popup_TapTv() {
-//        Thread.sleep(3000)
-//        val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/iv_close"))
-//        closeBtn.click()
-//    }
+    @Test
+    fun test_2_Close_Popup_TapTv() {
+        Thread.sleep(3000)
+        val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/iv_close"))
+        closeBtn.click()
+    }
 
 
 
