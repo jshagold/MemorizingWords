@@ -1,3 +1,4 @@
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
 import org.gradle.kotlin.dsl.implementation
 
 plugins {
@@ -61,8 +62,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.androidx.junit.runner)
+    androidTestImplementation(libs.androidx.junit.runner)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
@@ -96,5 +101,15 @@ dependencies {
 
 
     implementation("io.appium:java-client:9.4.0")
-    implementation("org.seleniumhq.selenium:selenium-java:4.28.0")
+//    implementation("org.seleniumhq.selenium:selenium-java:4.28.0")
+}
+
+tasks.withType<Test>().configureEach {
+
+    useJUnit()
+
+    isScanForTestClasses = false
+
+    include("**/AppiumSuite.class")
+
 }
