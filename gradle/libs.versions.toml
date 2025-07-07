@@ -23,11 +23,14 @@ coroutinesCoreVersion = "1.10.2"
 kotlinSerializationJsonVersion = "1.8.0"
 daggerVersion = "2.56.2"
 media3Version = "1.7.1"
+junitKtx = "1.2.1"
+androidJunitRunnerVersion = "1.6.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-junit-runner = { group = "androidx.test", name = "runner", version.ref = "androidJunitRunnerVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -83,6 +86,7 @@ media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", versi
 media3-exoplayer-dash = { group = "androidx.media3", name = "media3-exoplayer-dash", version.ref = "media3Version" }
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3Version" }
 media3-ui-compose = { group = "androidx.media3", name = "media3-ui-compose", version.ref = "media3Version" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

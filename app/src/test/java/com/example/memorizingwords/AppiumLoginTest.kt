@@ -1,7 +1,10 @@
 package com.example.memorizingwords
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.appium.java_client.AppiumBy
 import io.appium.java_client.android.AndroidDriver
+import io.appium.java_client.android.nativekey.AndroidKey
+import io.appium.java_client.android.nativekey.KeyEvent
 import io.appium.java_client.android.options.UiAutomator2Options
 import io.appium.java_client.remote.AutomationName
 import io.appium.java_client.remote.MobilePlatform
@@ -9,12 +12,20 @@ import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.FixMethodOrder
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import org.openqa.selenium.By
+import org.openqa.selenium.interactions.Pause
+import org.openqa.selenium.interactions.PointerInput
+import org.openqa.selenium.interactions.Sequence
+import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.WebDriverWait
 import java.net.URL
+import java.time.Duration
 
+//@RunWith(AndroidJUnit4::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class AppiumTest {
+class AppiumLoginTest {
 
 
     companion object {
@@ -26,21 +37,18 @@ class AppiumTest {
         private fun makeDriver(): AndroidDriver {
 
             val options = UiAutomator2Options()
-//                .setDeviceName("R9TX706CB9J")
                 .setPlatformName(MobilePlatform.ANDROID)
                 .setApp(apkFilePath)
                 .setAutomationName(AutomationName.ANDROID_UIAUTOMATOR2)
                 .setAppPackage("com.plantym.mediaservice.moazine")
                 .setAppActivity("com.plantym.mediaservice.moazine.MainActivity")
-                .setNoReset(false)
+                .setNoReset(false)  // 세션 종료 시 force-stop / 데이터 삭제 안 함
                 .apply {
                     setCapability("chromedriverAutodownload", true)
                     setCapability("ensureWebviewsHavePages", false)
                     setCapability("fullContextList", true)
                     setCapability("autoWebviewTimeout", 20000)
                 }
-
-
 
             return AndroidDriver(URL(DEFAULT_APPIUM_ADDRESS), options)
         }
@@ -54,20 +62,22 @@ class AppiumTest {
         @JvmStatic
         @AfterClass
         fun tearDown() {
-//        driver.quit()
+            driver.quit()
         }
     }
 
+    private val testLoadingTime: Long = 3000
+
     @Test
-    fun test_0_Waiting_And_Open_Popup_Authorization() {
-        Thread.sleep(3000)
+    fun test_000_Waiting_And_Open_Popup_Authorization() {
+        Thread.sleep(testLoadingTime)
         val nextBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_next"))
         nextBtn.click()
     }
 
     @Test
-    fun test_1_Click_Popup_Authorization() {
-        Thread.sleep(3000)
+    fun test_001_Click_Popup_Authorization() {
+        Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
         val contexts = driver.contextHandles
         println("All contexts: $contexts")
@@ -76,8 +86,8 @@ class AppiumTest {
     }
 
     @Test
-    fun test_2_Close_Popup_TapTv() {
-        Thread.sleep(3000)
+    fun test_002_Close_Popup_TapTv() {
+        Thread.sleep(testLoadingTime)
         val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/iv_close"))
         closeBtn.click()
     }
@@ -85,8 +95,8 @@ class AppiumTest {
 
 
     @Test
-    fun test_3_PagerUIScreen() {
-        Thread.sleep(3000)
+    fun test_003_PagerUIScreen() {
+        Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
 
         // 2. 컨텍스트 목록 출력
@@ -120,8 +130,8 @@ class AppiumTest {
     }
 
     @Test
-    fun test_4_Close_Advertise_Popup() {
-        Thread.sleep(3000)
+    fun test_004_Close_Advertise_Popup() {
+        Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
 
         // 2. 컨텍스트 목록 출력
@@ -144,8 +154,8 @@ class AppiumTest {
     }
 
     @Test
-    fun test_5_Click_Profile_Button() {
-        Thread.sleep(3000)
+    fun test_005_Click_Profile_Button() {
+        Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
 
         // 2. 컨텍스트 목록 출력
@@ -169,8 +179,8 @@ class AppiumTest {
 
 
     @Test
-    fun test_6_Click_Login_Button_Login_Popup() {
-        Thread.sleep(3000)
+    fun test_006_Click_Login_Button_Login_Popup() {
+        Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
 
         // 2. 컨텍스트 목록 출력
@@ -193,8 +203,8 @@ class AppiumTest {
     }
 
     @Test
-    fun test_7_Input_ID_PW() {
-        Thread.sleep(3000)
+    fun test_007_Input_ID_PW() {
+        Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
 
         // 2. 컨텍스트 목록 출력
@@ -220,8 +230,8 @@ class AppiumTest {
     }
 
     @Test
-    fun test_8_Click_Login_Button() {
-        Thread.sleep(3000)
+    fun test_008_Click_Login_Button() {
+        Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
 
         // 2. 컨텍스트 목록 출력
@@ -241,6 +251,30 @@ class AppiumTest {
         // 5. WebView 내부 요소 상호작용
         val loginBtn = driver.findElement(By.xpath("//div[@class='btn_full btn_login active']") )
         loginBtn.click()
+
+    }
+
+    @Test
+    fun test_009_Check_Success_Login() {
+        Thread.sleep(testLoadingTime)
+        println("testFindBackButton: ${driver.pageSource}", )
+
+        // 2. 컨텍스트 목록 출력
+        val contexts = driver.contextHandles
+        println("Available contexts: $contexts")
+
+        // 3. WebView 컨텍스트 찾기
+        val webviewContext = contexts.find { it.contains("WEBVIEW") }
+            ?: throw RuntimeException("No WEBVIEW context found")
+
+        println("webviewContext: $webviewContext")
+
+        // 4. 컨텍스트 전환
+        driver.context(webviewContext)
+        println("Switched to context: $webviewContext")
+
+        // 5. WebView 내부 요소 상호작용
+        val loginBtn = driver.findElement(By.xpath("//div[@class='main_top_text']") )
 
     }
 
