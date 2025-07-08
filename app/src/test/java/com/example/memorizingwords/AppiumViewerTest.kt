@@ -4,6 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.memorizingwords.AppiumLoginTest.Companion
 import io.appium.java_client.AppiumBy
 import io.appium.java_client.android.AndroidDriver
+import io.appium.java_client.android.StartsActivity
 import io.appium.java_client.android.nativekey.AndroidKey
 import io.appium.java_client.android.nativekey.KeyEvent
 import io.appium.java_client.android.options.UiAutomator2Options
@@ -56,6 +57,7 @@ class AppiumViewerTest {
         @BeforeClass
         fun setup() {
             driver = makeDriver()
+            driver.activateApp("com.plantym.mediaservice.moazine")
         }
 
         @JvmStatic
@@ -73,19 +75,19 @@ class AppiumViewerTest {
         println("testFindBackButton: ${driver.pageSource}", )
         val contexts = driver.contextHandles
         println("All contexts: $contexts")
-        val allowBtn = driver.findElement(AppiumBy.id("com.android.permissioncontroller:id/permission_allow_button"))
-        allowBtn.click()
-    }
 
+        // 3. WebView 컨텍스트 찾기
+        val webviewContext = contexts.find { it.contains("WEBVIEW") }
+            ?: throw RuntimeException("No WEBVIEW context found")
 
-    @Test
-    fun test_002_Select_Magazine() {
-        Thread.sleep(testLoadingTime)
-        println("testFindBackButton: ${driver.pageSource}", )
-        val contexts = driver.contextHandles
-        println("All contexts: $contexts")
-        val allowBtn = driver.findElement(AppiumBy.id("com.android.permissioncontroller:id/permission_allow_button"))
-        allowBtn.click()
+        println("webviewContext: $webviewContext")
+
+        // 4. 컨텍스트 전환
+        driver.context(webviewContext)
+        println("Switched to context: $webviewContext")
+
+        val homeTab = driver.findElement(By.xpath("//div[@class='item btn_cursor ic_bt_home']") )
+        homeTab.click()
     }
 
 

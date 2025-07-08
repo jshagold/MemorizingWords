@@ -1,0 +1,83 @@
+./gradlew clean
+
+@echo off
+setlocal enabledelayedexpansion
+
+rem ─── 1) 테스트 실행 + 로그 저장 ─────────────────────
+call gradlew.bat clean test > out.txt 2>&1
+set RC=%ERRORLEVEL%
+if %RC% EQU 0 exit /b 0
+
+rem ─── 2) 실패 시 마지막 20줄을 LOG 변수에 담기 ────────────
+set "LOG="
+for /f "usebackq delims=" %%L in (`
+    powershell -Command "Get-Content out.txt -Tail 20 | Out-String"
+`) do (
+    set "LOG=!LOG!%%L\n"
+)
+
+rem ─── 3) Markdown 형식 JSON 메시지 구성 ───────────────
+set "MSG={\"text\":\"**BUILD FAILED**: %JOB_NAME% #%BUILD_NUMBER%\n\n**Error Log:**\n```\n!LOG!\n```\n\n[Console Log](%BUILD_URL%console)\"}"
+
+rem ─── 4) Flow Webhook 호출 ────────────────────────────
+curl -s -X POST -H "Content-Type: application/json" -d "!MSG!" "https://default6c69e022ab7a4bc393e036c3c7fe47.0c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/0f80f33e975842f9aeac6d1920e60ac8/triggers/manual/paths/invoke/?api-version=1&tenantId=tId&environmentName=Default-6c69e022-ab7a-4bc3-93e0-36c3c7fe470c&sp=%%2Ftriggers%%2Fmanual%%2Frun&sv=1.0&sig=xS7Vopj7s_MfPhbqbNF3rhcyjoJNcWIbdGMYyNtIdM0"
+
+exit /b 1
+// 초기 성공
+///////////
+
+
+
+@echo off
+setlocal enabledelayedexpansion
+
+rem ── 1) 정리 + 테스트 한번에 실행 (로그 out.txt 로 저장) ─────────
+rem     Android 모듈이면 testDebugUnitTest 로 교체!
+call gradlew.bat clean :app:testDebugUnitTest ^
+     --tests com.example.memorizingwords.AppiumSuite ^
+     --rerun-tasks -i > out.txt 2>&1
+set RC=%ERRORLEVEL%
+
+rem ── 2) 성공이면 바로 종료 ────────────────────────────────
+if %RC% EQU 0 exit /b 0
+
+rem ── 3) 실패 시 마지막 20줄만 Webhook 전송 ────────────────
+set "LOG="
+for /f "usebackq delims=" %%L in (`
+  powershell -Command "Get-Content out.txt -Tail 20 | Out-String"
+`) do set "LOG=!LOG!%%L\n"
+
+set "MSG={\"text\":\"**BUILD FAILED**: %JOB_NAME% #%BUILD_NUMBER%\n\n**Error Log:**\n```\n!LOG!\n```\n\n[Console Log](%BUILD_URL%console)\"}"
+curl -s -H "Content-Type: application/json" -d "!MSG!" "https://default6c69e022ab7a4bc393e036c3c7fe47.0c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/0f80f33e975842f9aeac6d1920e60ac8/triggers/manual/paths/invoke/?api-version=1&tenantId=tId&environmentName=Default-6c69e022-ab7a-4bc3-93e0-36c3c7fe470c&sp=%%2Ftriggers%%2Fmanual%%2Frun&sv=1.0&sig=xS7Vopj7s_MfPhbqbNF3rhcyjoJNcWIbdGMYyNtIdM0"
+
+exit /b 1
+// 테스트 클래스, gradle 설정 변경 후 테스트 빌드 성공 -> Teams WorkFlow에 전송안되는 오류 발생
+//////////
+
+
+
+@echo off
+setlocal enabledelayedexpansion
+
+rem ─── 1) 테스트 실행 + 로그 저장 ─────────────────────
+call gradlew.bat clean test > out.txt 2>&1
+set RC=%ERRORLEVEL%
+if %RC% EQU 0 exit /b 0
+
+rem ─── 2) 실패 시 마지막 20줄을 LOG 변수에 담기 ────────────
+set "LOG="
+for /f "usebackq delims=" %%L in (`
+  powershell -NoProfile -Command ^
+    "Select-String -Path '%WORKSPACE%\out.txt' -Pattern 'AssertionError','Caused by',' at ' | Select-Object -Last 20 | Out-String"
+`) do (
+  set "LOG=!LOG!%%L\n"
+)
+
+rem ─── 3) Markdown 형식 JSON 메시지 구성 ───────────────
+set "MSG={\"text\":\" **BUILD FAILED**: %JOB_NAME% #%BUILD_NUMBER%\n\n**Error Log:**\n```\n!LOG!\n```\n\n[Console Log](%BUILD_URL%console)\"}"
+
+rem ─── 4) Flow Webhook 호출 ────────────────────────────
+curl -s -X POST -H "Content-Type: application/json" -d "!MSG!" "https://default6c69e022ab7a4bc393e036c3c7fe47.0c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/0f80f33e975842f9aeac6d1920e60ac8/triggers/manual/paths/invoke/?api-version=1&tenantId=tId&environmentName=Default-6c69e022-ab7a-4bc3-93e0-36c3c7fe470c&sp=%%2Ftriggers%%2Fmanual%%2Frun&sv=1.0&sig=xS7Vopj7s_MfPhbqbNF3rhcyjoJNcWIbdGMYyNtIdM0"
+
+exit /b 1
+// Exception 에러로그만 나오게 하면서 Build Number, Link 까지 전달되도록 설정

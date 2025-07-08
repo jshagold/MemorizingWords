@@ -85,10 +85,15 @@ class AppiumLoginTest {
         allowBtn.click()
     }
 
+
+    /**
+     * 오늘 하루 보지 않기 설정
+     */
     @Test
     fun test_002_Close_Popup_TapTv() {
         Thread.sleep(testLoadingTime)
-        val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/iv_close"))
+        println("testFindBackButton: ${driver.pageSource}", )
+        val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_dont_show_today"))
         closeBtn.click()
     }
 
