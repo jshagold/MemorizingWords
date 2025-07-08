@@ -1,10 +1,7 @@
 package com.example.memorizingwords
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.memorizingwords.AppiumLoginTest.Companion
 import io.appium.java_client.AppiumBy
 import io.appium.java_client.android.AndroidDriver
-import io.appium.java_client.android.StartsActivity
 import io.appium.java_client.android.nativekey.AndroidKey
 import io.appium.java_client.android.nativekey.KeyEvent
 import io.appium.java_client.android.options.UiAutomator2Options
@@ -14,7 +11,6 @@ import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.FixMethodOrder
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import org.openqa.selenium.By
 import org.openqa.selenium.interactions.Pause
@@ -26,7 +22,7 @@ import java.time.Duration
 
 //@RunWith(AndroidJUnit4::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class AppiumViewerTest {
+class AppiumViewerArticleListTest {
 
     companion object {
         private lateinit var driver: AndroidDriver
@@ -200,53 +196,93 @@ class AppiumViewerTest {
     }
 
     @Test
-    fun test_014_Click_Scrap_Button() {
+    fun test_014_Click_Article_List_Button() {
         Thread.sleep(testLoadingTime)
         println("Native App: ${driver.pageSource}", )
 
 
-        val scrapBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/menu_scrap") )
+        val scrapBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/menu_toc_list") )
         scrapBtn.click()
     }
 
     @Test
-    fun test_015_Select_Article_From_Popup() {
+    fun test_015_Select_Article_From_List() {
         Thread.sleep(testLoadingTime)
         println("Native App: ${driver.pageSource}", )
 
-        val leftTitleTv = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/article_left_tv_title") )
-        leftTitleTv.click()
+        val n = 2   // 0-based index you want
+        val locator = AppiumBy.androidUIAutomator(
+            // 한 줄 문자열이어야 파서가 오류 없이 읽습니다
+            "new UiScrollable(new UiSelector().resourceId(\"com.plantym.mediaservice.moazine:id/rv_toc_list\"))" +
+                    ".getChildByInstance(new UiSelector().className(\"android.view.ViewGroup\")," + n + ");"
+        )
 
-
-        val confirmBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_confirm") )
-        confirmBtn.click()
+        driver.findElement(locator).click()
     }
 
     @Test
-    fun test_016_Select_Scrap_Folder_From_Popup() {
+    fun test_016_Click_Text_Viewer_Button() {
         Thread.sleep(testLoadingTime)
         println("Native App: ${driver.pageSource}", )
 
 
-        val recycler = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/rv_scrap_dir_list"))
-        val items = recycler.findElements(AppiumBy.className("android.widget.TextView"))
-        items[0].click()
+        val textViewerBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/menu_item") )
+        textViewerBtn.click()
+    }
 
-        val confirmBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_confirm") )
-        confirmBtn.click()
+
+    @Test
+    fun test_017_Close_Text_Viewer_Button() {
+        Thread.sleep(testLoadingTime)
+        println("Native App: ${driver.pageSource}", )
+
+
+        val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/iv_close") )
+        closeBtn.click()
     }
 
     @Test
-    fun test_017_Close_Confirm_Popup() {
+    fun test_017_Close_Viewer_Button() {
         Thread.sleep(testLoadingTime)
         println("Native App: ${driver.pageSource}", )
 
-        val leftCloseBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_left") )
-        leftCloseBtn.click()
 
-        // 뒤로가기
-        driver.pressKey(KeyEvent(AndroidKey.BACK))
+        val closeBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/iv_close") )
+        closeBtn.click()
     }
+
+
+
+
+
+
+
+
+//    @Test
+//    fun test_016_Select_Scrap_Folder_From_Popup() {
+//        Thread.sleep(testLoadingTime)
+//        println("Native App: ${driver.pageSource}", )
+//
+//
+//        val recycler = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/rv_scrap_dir_list"))
+//        val items = recycler.findElements(AppiumBy.className("android.widget.TextView"))
+//        items[0].click()
+//
+//        val confirmBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_confirm") )
+//        confirmBtn.click()
+//    }
+//
+//    @Test
+//    fun test_017_Close_Confirm_Popup() {
+//        Thread.sleep(testLoadingTime)
+//        println("Native App: ${driver.pageSource}", )
+//
+//        val leftCloseBtn = driver.findElement(AppiumBy.id("com.plantym.mediaservice.moazine:id/button_left") )
+//        leftCloseBtn.click()
+//
+//        // 뒤로가기
+//        driver.pressKey(KeyEvent(AndroidKey.BACK))
+//    }
 
 
     /**

@@ -8,7 +8,7 @@ import org.junit.runners.Suite
 @Suite.SuiteClasses(
     value = [
         AppiumLoginTest::class,
-        AppiumViewerTest::class
+        AppiumViewerArticleListTest::class
     ]
 )
 class AppiumSuite
