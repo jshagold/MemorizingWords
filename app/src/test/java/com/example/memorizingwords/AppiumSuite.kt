@@ -10,6 +10,7 @@ import org.junit.runners.Suite
         AppiumLoginTest::class,
         AppiumViewerArticleListTest::class,
         AppiumViewerTranslate::class,
+        AppiumTTSRead::class,
     ]
 )
 class AppiumSuite
