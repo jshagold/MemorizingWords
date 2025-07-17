@@ -253,7 +253,7 @@ class AppiumTTSRead {
         stopBtn.click()
     }
 
-    
+
     @Test
     fun test_021_Close_Text_Viewer_Button() {
         Thread.sleep(testLoadingTime)
