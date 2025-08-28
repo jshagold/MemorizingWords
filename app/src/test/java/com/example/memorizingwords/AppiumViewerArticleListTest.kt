@@ -28,7 +28,7 @@ class AppiumViewerArticleListTest {
         private lateinit var driver: AndroidDriver
 
         private val DEFAULT_APPIUM_ADDRESS = "http://localhost:4723"
-        private val apkFilePath = "C:/Users/admin/Documents/moa/moazine-aos/app/build/outputs/apk/debug/app-debug.apk"
+        private val apkFilePath = "C:/Users/testroom/Desktop/TestFile/app-debug.apk"
 
         private fun makeDriver(): AndroidDriver {
 
