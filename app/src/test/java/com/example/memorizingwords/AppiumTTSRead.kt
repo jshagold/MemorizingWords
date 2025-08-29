@@ -5,6 +5,7 @@ import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.android.options.UiAutomator2Options
 import io.appium.java_client.remote.AutomationName
 import io.appium.java_client.remote.MobilePlatform
+import org.junit.After
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.FixMethodOrder
@@ -51,11 +52,16 @@ class AppiumTTSRead {
             driver.activateApp("com.plantym.mediaservice.moazine")
         }
 
+
         @JvmStatic
         @AfterClass
         fun tearDown() {
+            try { driver.terminateApp("com.plantym.mediaservice.moazine") } catch (_: Exception) {}
+
             driver.quit()
         }
+
+
     }
 
     private val testLoadingTime: Long = 5000
