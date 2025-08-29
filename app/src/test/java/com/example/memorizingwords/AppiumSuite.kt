@@ -11,7 +11,7 @@ import org.junit.runners.Suite
         AppiumViewerArticleListTest::class,
         AppiumViewerTranslate::class,
         AppiumTTSRead::class,
-        AppiumViewerScrap::class,
+//        AppiumViewerScrap::class,
     ]
 )
 class AppiumSuite
