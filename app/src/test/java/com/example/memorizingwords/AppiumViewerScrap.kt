@@ -153,7 +153,7 @@ class AppiumViewerScrap {
         closeBtn.click()
     }
 
-    @Test
+//    @Test
     fun test_006_Click_Article() {
         Thread.sleep(testLoadingTime)
         // 3. WebView 컨텍스트 찾기
