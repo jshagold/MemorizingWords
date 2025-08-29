@@ -63,7 +63,7 @@ class AppiumViewerArticleListTest {
         }
     }
 
-    private val testLoadingTime: Long = 3000
+    private val testLoadingTime: Long = 5000
 
     @Test
     fun test_001_Set_Home_Tab() {

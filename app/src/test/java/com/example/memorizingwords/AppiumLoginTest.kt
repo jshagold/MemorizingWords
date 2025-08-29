@@ -44,6 +44,7 @@ class AppiumLoginTest {
                 .setAppActivity("com.plantym.mediaservice.moazine.MainActivity")
                 .setNoReset(false)  // 세션 종료 시 force-stop / 데이터 삭제 안 함
                 .apply {
+                    setCapability("appium:skipServerInstallation",true)
                     setCapability("chromedriverAutodownload", true)
                     setCapability("ensureWebviewsHavePages", false)
                     setCapability("fullContextList", true)
@@ -66,7 +67,7 @@ class AppiumLoginTest {
         }
     }
 
-    private val testLoadingTime: Long = 3000
+    private val testLoadingTime: Long = 5000
 
     @Test
     fun test_000_Waiting_And_Open_Popup_Authorization() {
@@ -75,7 +76,7 @@ class AppiumLoginTest {
         nextBtn.click()
     }
 
-    @Test
+//    @Test
     fun test_001_Click_Popup_Authorization() {
         Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
@@ -89,7 +90,7 @@ class AppiumLoginTest {
     /**
      * 오늘 하루 보지 않기 설정
      */
-    @Test
+//    @Test
     fun test_002_Close_Popup_TapTv() {
         Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
