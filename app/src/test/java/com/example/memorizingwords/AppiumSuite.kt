@@ -9,8 +9,8 @@ import org.junit.runners.Suite
     value = [
         AppiumLoginTest::class,
         AppiumViewerArticleListTest::class,
-//        AppiumViewerTranslate::class,
-//        AppiumTTSRead::class,
+        AppiumViewerTranslate::class,
+        AppiumTTSRead::class,
 //        AppiumViewerScrap::class,
     ]
 )

@@ -43,7 +43,7 @@ class AppiumViewerScrap {
                     setCapability("chromedriverAutodownload", true)
                     setCapability("ensureWebviewsHavePages", false)
                     setCapability("fullContextList", true)
-                    setCapability("autoWebviewTimeout", 20000)
+                    setCapability("autoWebviewTimeout", 60000)
                 }
 
             return AndroidDriver(URL(DEFAULT_APPIUM_ADDRESS), options)
@@ -63,7 +63,7 @@ class AppiumViewerScrap {
         }
     }
 
-    private val testLoadingTime: Long = 5000
+    private val testLoadingTime: Long = 10000
 
     @Test
     fun test_001_Set_Home_Tab() {
