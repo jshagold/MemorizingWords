@@ -67,7 +67,7 @@ class AppiumLoginTest {
         }
     }
 
-    private val testLoadingTime: Long = 10000
+    private val testLoadingTime: Long = 5000
 
     @Test
     fun test_000_Waiting_And_Open_Popup_Authorization() {
