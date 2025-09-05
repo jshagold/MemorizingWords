@@ -11,17 +11,27 @@ import io.appium.java_client.remote.MobilePlatform
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.FixMethodOrder
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import org.openqa.selenium.By
+import org.openqa.selenium.OutputType
+import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.interactions.Pause
 import org.openqa.selenium.interactions.PointerInput
 import org.openqa.selenium.interactions.Sequence
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
+import java.io.File
 import java.net.URL
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.time.Duration
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 //@RunWith(AndroidJUnit4::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -68,6 +78,57 @@ class AppiumLoginTest {
     }
 
     private val testLoadingTime: Long = 5000
+
+
+    private fun safeScreenshotPath(description: Description, tag: String = "FAIL"): File {
+        val ts = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS"))
+        val dir = File("screenshots/${description.className}")
+        dir.mkdirs()
+        return File(dir, "${description.methodName}_${tag}_$ts.png")
+    }
+
+    private fun captureScreenshotFallback(description: Description) {
+        // 1차: 현재 컨텍스트에서 캡처
+        runCatching {
+            val out = safeScreenshotPath(description)
+            val src = (driver as TakesScreenshot).getScreenshotAs(OutputType.FILE)
+            Files.copy(src.toPath(), out.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            println("📸 Saved screenshot: ${out.absolutePath}")
+            return
+        }.onFailure { println("⚠️ Screenshot (current context) failed: ${it.message}") }
+
+        // 2차: NATIVE_APP으로 전환 후 재시도
+        runCatching {
+            val original = runCatching { driver.context }.getOrNull()
+            runCatching { driver.context("NATIVE_APP") }
+            val out = safeScreenshotPath(description, "NATIVE")
+            val src = (driver as TakesScreenshot).getScreenshotAs(OutputType.FILE)
+            Files.copy(src.toPath(), out.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            println("📸 Saved screenshot (NATIVE): ${out.absolutePath}")
+            // 원래 컨텍스트 복귀(가능하면)
+            runCatching { if (original != null) driver.context(original) }
+        }.onFailure { println("❌ Screenshot (NATIVE) failed: ${it.message}") }
+    }
+
+    @JvmField
+    @Rule
+    val screenshotOnFailure: TestWatcher = object : TestWatcher() {
+        override fun starting(description: Description) {
+            println("▶️ start: ${description.className}.${description.methodName}")
+        }
+        override fun succeeded(description: Description) {
+            println("✅ pass: ${description.className}.${description.methodName}")
+        }
+        override fun failed(e: Throwable?, description: Description) {
+            println("❌ fail: ${description.className}.${description.methodName} -> ${e?.message}")
+            captureScreenshotFallback(description)
+        }
+        override fun finished(description: Description) {
+            println("⏹ finished: ${description.className}.${description.methodName}")
+        }
+    }
+
+
 
     @Test
     fun test_000_Waiting_And_Open_Popup_Authorization() {
