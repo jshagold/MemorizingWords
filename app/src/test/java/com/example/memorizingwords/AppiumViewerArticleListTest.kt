@@ -149,6 +149,7 @@ class AppiumViewerArticleListTest {
         button.click()
         button.click()
         button.click()
+        
     }
 
 
