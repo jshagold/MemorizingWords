@@ -125,6 +125,34 @@ class AppiumViewerArticleListTest {
 
 
     @Test
+    fun test_000_PagerUIScreen() {
+        Thread.sleep(testLoadingTime)
+        println("testFindBackButton: ${driver.pageSource}", )
+
+        // 2. 컨텍스트 목록 출력
+        val contexts = driver.contextHandles
+        println("Available contexts: $contexts")
+
+        // 3. WebView 컨텍스트 찾기
+        val webviewContext = contexts.find { it.contains("WEBVIEW") }
+            ?: throw RuntimeException("No WEBVIEW context found")
+
+        println("webviewContext: $webviewContext")
+
+        // 4. 컨텍스트 전환
+        driver.context(webviewContext)
+        println("Switched to context: $webviewContext")
+
+        // 5. WebView 내부 요소 상호작용
+        val button = driver.findElement(By.xpath("//span[text()='다음']") )
+        button.click()
+        button.click()
+        button.click()
+        button.click()
+    }
+
+
+    @Test
     fun test_001_Set_Home_Tab() {
         Thread.sleep(testLoadingTime)
         println("testFindBackButton: ${driver.pageSource}", )
